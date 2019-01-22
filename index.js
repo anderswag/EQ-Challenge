@@ -4,7 +4,13 @@ const pg = require('pg')
 const app = express()
 // configs come from standard PostgreSQL env vars
 // https://www.postgresql.org/docs/9.6/static/libpq-envars.html
-const pool = new pg.Pool()
+const pool = new pg.Pool({
+  user: process.env.PGUSER,
+  host: process.env.PGHOST,
+  database: process.env.PGDATABASE,
+  password: process.env.PGPASSWORD,
+  port: process.env.PGPORT,
+})
 
 const queryHandler = (req, res, next) => {
   pool.query(req.sqlQuery).then((r) => {
@@ -17,6 +23,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/events/hourly', (req, res, next) => {
+  console.log("HELLO man")
   req.sqlQuery = `
     SELECT date, hour, events
     FROM public.hourly_events
