@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require('express')
 const pg = require('pg')
 
@@ -19,11 +21,10 @@ const queryHandler = (req, res, next) => {
 }
 
 app.get('/', (req, res) => {
-  res.send('Welcome to EQ Works 😎')
+  res.send(`${process.env.PGUSER}Welcome to EQ Works 😎`)
 })
 
 app.get('/events/hourly', (req, res, next) => {
-  console.log("HELLO man")
   req.sqlQuery = `
     SELECT date, hour, events
     FROM public.hourly_events
