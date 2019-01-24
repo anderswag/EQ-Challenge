@@ -1,5 +1,14 @@
 require('dotenv').config()
 
+// ENDPOINTS 
+/*
+/events/hourly
+/events/daily
+/stats/hourly
+/stats/daily
+/poi
+ */
+
 const express = require('express')
 const pg = require('pg')
 
@@ -24,9 +33,11 @@ app.get('/', (req, res) => {
   res.send(`${process.env.PGUSER}Welcome to EQ Works 😎`)
 })
 
+
+// TODO: implement rate limiting
 app.get('/events/hourly', (req, res, next) => {
   req.sqlQuery = `
-    SELECT date, hour, events
+    SELECT *
     FROM public.hourly_events
     ORDER BY date, hour
     LIMIT 168;
@@ -47,7 +58,7 @@ app.get('/events/daily', (req, res, next) => {
 
 app.get('/stats/hourly', (req, res, next) => {
   req.sqlQuery = `
-    SELECT date, hour, impressions, clicks, revenue
+    SELECT *
     FROM public.hourly_stats
     ORDER BY date, hour
     LIMIT 168;
